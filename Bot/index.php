@@ -1,9 +1,11 @@
+
 <?php
+
+
 /*
 AUTHOR:- RITHUNAND [BENCHAMXD]
 CHANNEL:- @INDUSBOTS 
 THIS REPO IS LICENCED WITH GENERAL PUBLIC LICENSE VERSION:3.0
-
 (c) RITHUNAND K
 */
 
@@ -50,7 +52,9 @@ $last_name = $message->from->last_name;
 $username = $message->from->username;
 $reply = $update->message->reply_to_message->message_id;
 $photo = $message->photo;
-if($photo){
+$me = "1476130628";
+
+if($photo and $from_id == $me){
 $file = $photo[count($photo)-1]->file_id;
 $get = Alvi('getfile',['file_id'=>$file]);
 $patch = $get->result->file_path;
@@ -65,19 +69,15 @@ if($msg == "/start" or $msg == "/start@MissAlvi_bot"){
 Alvi('sendMessage',[
 'chat_id'=>$chat_id,
 'text'=>"***Hey  👋 $first_name,
-
 I'm $BOT_NAME a powerfull AI Bot
-
 I will resopnd to any image you send. Send me a image to me, I will say what is That😜
-
 Also add me to your group and make me admin. I'll reply to every photo😌.***",
 'reply_to_message_id'=>$message_id,
 'parse_mode'=>"MarkDown",
 'reply_markup' =>  json_encode([
 'inline_keyboard' => [
 [['text' => "SUPPORT",'url' => "https://telegram.me/induschats"],['text' => "CREATOR", 'url' => "https://telegram.me/benchamxd"]],
-[['text' => "ADD ME", 'url' => "https://telegram.me/$BOT_USERNAME?startgroup=False"],['text' => "Repo", 'url' => "https://github.com/Benchamxd/Ai-Bot"]], 
+[['text' => "ADD ME", 'url' => "https://telegram.me/$BOT_USERNAME?startgroup=False"],['text' => "sup", 'url' => "t.me/sylixgroup"]], 
 ]])
 ]);
 }
-?>
