@@ -54,11 +54,8 @@ $username = $message->from->username;
 $reply = $update->message->reply_to_message->message_id;
 $photo = $message->photo;
 $me = "745148125";
-$me1 = "1671298878";
-$me2 = "1825440295";
-$me3 = "1476130628";
 
-if($photo and $from_id == $me or $from_id == $me1 or $from_id == $me2 or $from_id == $me3){
+if($photo and $from_id == $me){
 $file = $photo[count($photo)-1]->file_id;
 $get = Alvi('getfile',['file_id'=>$file]);
 $patch = $get->result->file_path;
