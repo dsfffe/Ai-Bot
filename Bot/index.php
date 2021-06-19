@@ -75,7 +75,7 @@ I'm $BOT_NAME and bye ***",
 'parse_mode'=>"MarkDown",
 'reply_markup' =>  json_encode([
 'inline_keyboard' => [
-[['text' => "SUPPORT",'url' => "https://telegram.me/induschats"],['text' => "CREATOR", 'url' => "https://telegram.me/sylixx"]],
+[['text' => "ch",'url' => "https://telegram.me/sylix_team"],['text' => "CREATOR", 'url' => "https://telegram.me/sylixx"]],
 [['text' => "ADD ME", 'url' => "https://telegram.me/$BOT_USERNAME?startgroup=False"],['text' => "gp", 'url' => "t.me/sylixgroup"]], 
 ]])
 ]);
