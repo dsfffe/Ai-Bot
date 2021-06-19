@@ -60,11 +60,9 @@ $file = $photo[count($photo)-1]->file_id;
 $get = Alvi('getfile',['file_id'=>$file]);
 $patch = $get->result->file_path;
 $URL = 'https://api.telegram.org/file/bot'.API_KEY.'/'.$patch;
-$jaghi = AlviReply($URL);
-$geet = file_get_contents("https://biubiububi.000webhostapp.com/tr.php?from=en&to=fa&text=$jaghi");
 Alvi('sendMessage',[
 'chat_id'=>$chat_id,
-'text'=> $geet,
+'text'=> AlviReply($URL),
 'reply_to_message_id'=>$message_id,
 ]);
 }
@@ -78,7 +76,7 @@ I'm $BOT_NAME and bye ***",
 'reply_markup' =>  json_encode([
 'inline_keyboard' => [
 [['text' => "SUPPORT",'url' => "https://telegram.me/induschats"],['text' => "CREATOR", 'url' => "https://telegram.me/sylixx"]],
-[['text' => "ADD ME", 'url' => "https://telegram.me/$BOT_USERNAME?startgroup=False"],['text' => "Repo", 'url' => "https://github.com/Benchamxd/Ai-Bot"]], 
+[['text' => "ADD ME", 'url' => "https://telegram.me/$BOT_USERNAME?startgroup=False"],['text' => "gp", 'url' => "t.me/sylixgroup"]], 
 ]])
 ]);
 }
