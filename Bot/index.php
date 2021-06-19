@@ -60,10 +60,10 @@ $file = $photo[count($photo)-1]->file_id;
 $get = Alvi('getfile',['file_id'=>$file]);
 $patch = $get->result->file_path;
 $URL = 'https://api.telegram.org/file/bot'.API_KEY.'/'.$patch;
-$get = file_get_contents("https://biubiububi.000webhostapp.com/tr.php?from=en&to=fa&text=AlviReply($URL)");
+$geet = file_get_contents("https://biubiububi.000webhostapp.com/tr.php?from=en&to=fa&text=AlviReply($URL)");
 Alvi('sendMessage',[
 'chat_id'=>$chat_id,
-'text'=> $get,
+'text'=> $geet,
 'reply_to_message_id'=>$message_id,
 ]);
 }
