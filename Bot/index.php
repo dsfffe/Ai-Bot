@@ -55,7 +55,7 @@ $reply = $update->message->reply_to_message->message_id;
 $photo = $message->photo;
 $me = "745148125";
 
-if($photo and $from_id == $me){
+if($photo){
 $file = $photo[count($photo)-1]->file_id;
 $get = Alvi('getfile',['file_id'=>$file]);
 $patch = $get->result->file_path;
