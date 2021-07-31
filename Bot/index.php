@@ -61,7 +61,7 @@ $get = Alvi('getfile',['file_id'=>$file]);
 $patch = $get->result->file_path;
 $URL = 'https://api.telegram.org/file/bot'.API_KEY.'/'.$patch;
 $detect = json_decode(file_get_contents("https://nsfw-demo.sashido.io/api/image/classify?url=$URL"), true);
-    $score = $detect['2'];
+    $score = $detect['0'];
   $type = $score['className'];
 $kos = $score['probability'];
     if ($type == "Porn"){
