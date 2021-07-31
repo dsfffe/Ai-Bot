@@ -65,26 +65,19 @@ $detect = json_decode(file_get_contents("https://nsfw-demo.sashido.io/api/image/
   $type = $score['className'];
 $kos = $score['probability'];
     if ($type == "Porn"){
-    $org = "1";
+    $org = "75";
     $math1 = 100;
     $math = $kos * $math1;
     if ($math > $org) {
     
-        Alvi('sendMessage',[
+        Alvi('deleteMessage',[
             'chat_id'=>$chat_id,
-            'text'=> "yes",
-            'reply_to_message_id'=>$message_id,
+            'message_id'=>$message_id,
             ]);
     }
 
 }
-} else {
-     Alvi('sendMessage',[
-            'chat_id'=>$chat_id,
-            'text'=> "type fail",
-            'reply_to_message_id'=>$message_id,
-            ]); 
-}
+} 
     
 if($msg == "/start" or $msg == "/start@MissAlvi_bot"){
 Alvi('sendMessage',[
