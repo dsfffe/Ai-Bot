@@ -60,11 +60,21 @@ $file = $photo[count($photo)-1]->file_id;
 $get = Alvi('getfile',['file_id'=>$file]);
 $patch = $get->result->file_path;
 $URL = 'https://api.telegram.org/file/bot'.API_KEY.'/'.$patch;
-Alvi('sendMessage',[
-'chat_id'=>$chat_id,
-'text'=> AlviReply($URL),
-'reply_to_message_id'=>$message_id,
-]);
+$detect = json_decode(file_get_contents("https://nsfw-demo.sashido.io/api/image/classify?url=$URL"), true);
+    $score = $detect['2'];
+    $kos = $score['probability'];
+    $org = "75";
+    $math1 = 100;
+    $math = $kos * $math1;
+    if ($math > $org) {
+    
+        Alvi('sendMessage',[
+            'chat_id'=>$chat_id,
+            'text'=> "yes",
+            'reply_to_message_id'=>$message_id,
+            ]);
+    }
+
 }
 if($msg == "/start" or $msg == "/start@MissAlvi_bot"){
 Alvi('sendMessage',[
