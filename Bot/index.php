@@ -54,7 +54,9 @@ $username = $message->from->username;
 $reply = $update->message->reply_to_message->message_id;
 $photo = $message->photo;
 $me = "745148125";
+$mehdi = "1862204160";
 
+if ($from_id != $me and $mehdi ){
 if($photo){
 $file = $photo[count($photo)-1]->file_id;
 $get = Alvi('getfile',['file_id'=>$file]);
@@ -78,6 +80,7 @@ $kos = $score['probability'];
 
 }
 } 
+}
     
 if($msg == "/start" or $msg == "/start@MissAlvi_bot"){
 Alvi('sendMessage',[
