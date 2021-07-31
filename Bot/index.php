@@ -63,7 +63,7 @@ $URL = 'https://api.telegram.org/file/bot'.API_KEY.'/'.$patch;
 $detect = json_decode(file_get_contents("https://nsfw-demo.sashido.io/api/image/classify?url=$URL"), true);
     $score = $detect['2'];
     $kos = $score['probability'];
-    $org = "75";
+    $org = "1";
     $math1 = 100;
     $math = $kos * $math1;
     if ($math > $org) {
