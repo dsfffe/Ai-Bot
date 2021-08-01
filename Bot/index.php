@@ -1,98 +1,125 @@
 
-
 <?php
 
+/**
+ * @var Creator : T.me//MrSylix
+ * @version SylixTeam PHP Member Baner By MrSylix v1.0.0
+ */
 
-/*
-AUTHOR:- RITHUNAND [BENCHAMXD]
-CHANNEL:- @INDUSBOTS 
-THIS REPO IS LICENCED WITH GENERAL PUBLIC LICENSE VERSION:3.0
-(c) RITHUNAND K
-*/
 
-require_once __DIR__ . "/config.php";
-
-ob_start();
-define('API_KEY',$TG_BOT_TOKEN);
-ini_set("log_errors","off");
-date_default_timezone_set('Asia/Kolkata');
-function Alvi($method,$datas=[]){
-$url = "https://api.telegram.org/bot".API_KEY."/".$method;
-$ch = curl_init();
-curl_setopt($ch,CURLOPT_URL,$url);
-curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-curl_setopt($ch,CURLOPT_POSTFIELDS,$datas);
-$res = curl_exec($ch);
-if(curl_error($ch)){
-var_dump(curl_error($ch));
-}else{
-return json_decode($res);
+if (!file_exists('madeline.php')) {
+    copy('https://phar.madelineproto.xyz/madeline.php', 'madeline.php');
 }
-}
-function AlviReply($image_url)
+
+include 'madeline.php';
+
+use \danog\MadelineProto\API;
+use \danog\Loop\Generic\GenericLoop;
+use \danog\MadelineProto\EventHandler;
+
+
+class XHandler extends EventHandler
 {
-    $ch = curl_init('https://captionbot.azurewebsites.net/api/messages');
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['Type' => 'CaptionRequest', 'Content' => $image_url]));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-    $response = curl_exec($ch);
-    curl_close($ch);
-    $response = json_decode($response);
+    const Admins = [0 => 1476130628];
+    const Report = '@MrMahdiii';
 
-    return $response;
-}
-$update = json_decode(file_get_contents('php://input'));
-$message = $update->message;
-$chat_id = $message->chat->id;
-$message_id = $message->message_id;
-$from_id = $message->from->id;
-$msg = $message->text;
-$first_name = $message->from->first_name;
-$last_name = $message->from->last_name;
-$username = $message->from->username;
-$reply = $update->message->reply_to_message->message_id;
-$photo = $message->photo;
-$me = "1813866010";
-$mehdi = "1862204160";
-
-if ($from_id != $me and $mehdi ){
-if($photo){
-$file = $photo[count($photo)-1]->file_id;
-$get = Alvi('getfile',['file_id'=>$file]);
-$patch = $get->result->file_path;
-$URL = 'https://api.telegram.org/file/bot'.API_KEY.'/'.$patch;
-$detect = json_decode(file_get_contents("https://nsfw-demo.sashido.io/api/image/classify?url=$URL"), true);
-    $score = $detect['0'];
-  $type = $score['className'];
-$kos = $score['probability'];
-    if ($type == "Porn"){
-    $org = "75";
-    $math1 = 100;
-    $math = $kos * $math1;
-    if ($math > $org) {
-    
-        Alvi('deleteMessage',[
-            'chat_id'=>$chat_id,
-            'message_id'=>$message_id,
-            ]);
+    public function getReportPeers()
+    {
+        return [self::Report];
+    }
+    public function genLoop()
+    {
+        yield $this->account->updateStatus([
+            'offline' => false
+        ]);
+        return 60000;
     }
 
+    public function onStart()
+    {
+        $genLoop = new GenericLoop([$this, 'genLoop'], 'update Status');
+        $genLoop->start();
+    }
+
+    public function onUpdateNewChannelMessage($update)
+    {
+        yield $this->onUpdateNewMessage($update);
+    }
+    public function getMessages($update, $id = [])
+    {
+        try {
+            $info = yield $this->getInfo($update);
+
+            $method = in_array($info['type'], ['bot', 'user', 'chat']) ? 'messages' : 'channels';
+            $params = ['id' => $id];
+
+            if (in_array($info['type'], ['channel', 'supergroup'])) {
+                $params['channel'] = $update;
+            }
+
+            $get = yield $this->$method->getMessages($params);
+            return $get;
+        } catch (Throwable $e) {
+            //throw new Exception($e->getMessage());
+        }
+    }
+
+    public function onUpdateNewMessage($update)
+    {
+        if (time() - $update['message']['date'] > 2) {
+            return;
+        }
+        try {
+            $msg             = isset($update['message']) ? $update['message'] : null;
+            $txt             = isset($update['message']['message']) ? $update['message']['message'] : null;
+            $msg_id          = isset($update['message']['id']) ? $update['message']['id'] : null;
+            $reply_to_msg_id = isset($update['message']['reply_to']['reply_to_msg_id']) ? $update['message']['reply_to']['reply_to_msg_id'] : null;
+            $user_id         = isset($update['message']['from_id']['user_id']) ? $update['message']['from_id']['user_id'] : null;
+            $com             = isset($update['message']['fwd_from']['saved_from_peer']) ? true : false;
+            $me              = yield $this->getSelf();
+            $peer            = yield $this->getInfo($update);
+            $chID            = yield $this->getID($update);
+            $chat_id         = $peer['bot_api_id'];
+            $type            = $peer['type'];
+
+
+            if (isset($update['message']['fwd_from']['saved_from_peer'])){
+                yield $this->messages->sendMessage(['peer' => $chID, 'message' => "kosam", 'parse_mode' => 'Markdown', 'reply_to_msg_id' => $msg_id]);
+                }
+                
+            
+            #ADMIN Commands
+            if (in_array($user_id, self::Admins) || $user_id == $me_id) {
+
+            
+                    
+
+       
+
+
+            }
+        } catch (\Throwable $e) {
+            //$this->report("Surfaced: $e");
+        }
+    }
 }
-} 
-}
-    
-if($msg == "/start" or $msg == "/start@MissAlvi_bot"){
-Alvi('sendMessage',[
-'chat_id'=>$chat_id,
-'text'=>"***Hey  👋 $first_name,
-I'm $BOT_NAME and bye ***",
-'reply_to_message_id'=>$message_id,
-'parse_mode'=>"MarkDown",
-'reply_markup' =>  json_encode([
-'inline_keyboard' => [
-[['text' => "ch",'url' => "https://telegram.me/sylix_team"],['text' => "CREATOR", 'url' => "https://telegram.me/sylixx"]],
-[['text' => "ADD ME", 'url' => "https://telegram.me/$BOT_USERNAME?startgroup=False"],['text' => "gp", 'url' => "t.me/sylixgroup"]], 
-]])
-]);
-}
+
+$settings = [
+    'serialization' => [
+        'cleanup_before_serialization' => true,
+    ],
+    'logger' => [
+        'max_size' => 1 * 1024 * 1024,
+    ],
+    'peer' => [
+        'full_fetch' => false,
+        'cache_all_peers_on_startup' => false,
+    ],
+    'app_info' => [
+        'api_id' => 1374236,
+        'api_hash' => '4df50166bf37f939cd10c71ece878b06'
+    ]
+];
+
+$bot = new \danog\MadelineProto\API('X.session', $settings);
+$bot->startAndLoop(XHandler::class);
